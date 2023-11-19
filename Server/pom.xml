@@ -4,7 +4,7 @@
   <groupId>dev.siea</groupId>
   <artifactId>PassBroServer</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Archetype - PassBro</name>
+  <name>PassBro</name>
   <url>http://maven.apache.org</url>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
