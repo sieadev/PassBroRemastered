@@ -1,6 +1,7 @@
 package dev.siea.passbro.gui;
 
 import javax.swing.*;
+
 import com.formdev.flatlaf.FlatDarkLaf;
 import dev.siea.passbro.PassBro;
 import dev.siea.passbro.database.AccountDatabase;
@@ -10,11 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GraphicalUserInterface {
-    private final PassBro main;
+    private JTabbedPane tabbedPane;
     private JFrame mainFrame;
-    private JProgressBar loadingBar;
     public GraphicalUserInterface(PassBro main){
-        this.main = main;
         try {
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (UnsupportedLookAndFeelException e) {
@@ -74,25 +73,94 @@ public class GraphicalUserInterface {
 
     private void initializeMainWindow() {
         clearFrame();
+        mainFrame.setMinimumSize(new Dimension(450, 200));
         mainFrame.setVisible(false);
-        mainFrame.setResizable(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(1200, 800);
         mainFrame.setLayout(new BorderLayout());
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setTitle("Passbro - Welcome!");
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Create tabs
+        tabbedPane = new JTabbedPane();
+
+        // Add tabs to the tabbedPane
+        addTab("Passwords", createPasswordPanel());
+        addTab("Notes", createNotesPanel());
+        addTab("Contacts", createContactsPanel());
+        addTab("Generator", createGeneratorPanel());
+        addTab("Account", createAccountPanel());
+
+        mainFrame.add(tabbedPane, BorderLayout.CENTER);
+
+        mainFrame.setResizable(true);
         mainFrame.setVisible(true);
     }
 
-    private void clearFrame(){
-        for (Component component : mainFrame.getComponents()){
-            mainFrame.remove(component);
-        }
+    private JPanel createPasswordPanel() {
+        JPanel passwordPanel = new JPanel();
+        passwordPanel.add(new JLabel("Password Tab Content"));
+        return passwordPanel;
+    }
+
+    private JPanel createNotesPanel() {
+        JPanel notesPanel = new JPanel();
+        notesPanel.add(new JLabel("Notes Tab Content"));
+        return notesPanel;
+    }
+
+    private JPanel createContactsPanel() {
+        JPanel contactsPanel = new JPanel();
+        contactsPanel.add(new JLabel("Contacts Tab Content"));
+        return contactsPanel;
+    }
+
+    private JPanel createGeneratorPanel() {
+        JPanel generatorPanel = new JPanel();
+        generatorPanel.add(new JLabel("Generator Tab Content"));
+        return generatorPanel;
+    }
+
+    private JPanel createAccountPanel() {
+        JPanel accountPanel = new JPanel();
+        accountPanel.add(new JLabel("Account Tab Content"));
+        return accountPanel;
+    }
+
+    private void addTab(String title, JPanel panel) {
+        tabbedPane.addTab(title, panel);
+        int index = tabbedPane.indexOfTab(title);
+
+        JPanel tabPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+
+        JButton tabButton = new JButton(title);
+        tabButton.setFocusable(false);
+        tabButton.setBorderPainted(true);
+        tabButton.setFocusPainted(true);
+        tabButton.setContentAreaFilled(false);
+
+        // Set the tab layout policy to make tabs stretch to fill the available space
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+        // Set the tab placement to LEFT
+        tabbedPane.setTabPlacement(JTabbedPane.LEFT);
+
+        tabButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedIndex(index);
+            }
+        });
+
+        tabPanel.add(tabButton);
+        tabbedPane.setTabComponentAt(index, tabPanel);
+    }
+
+    private void clearFrame() {
+        mainFrame.getContentPane().removeAll();
     }
 
     public void close() {
         mainFrame.dispose();
     }
-
 }
